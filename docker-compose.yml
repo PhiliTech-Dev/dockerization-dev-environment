@@ -21,7 +21,6 @@ services:
     image: percona 
     ports:
       - "3306:3306"
-
   couchdb:
     image: couchdb
     ports: 
