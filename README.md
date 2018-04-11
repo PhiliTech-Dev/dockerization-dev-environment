@@ -1,4 +1,4 @@
-# Docker ELK stack
+# Dockerized Dev Environment
 
 [![Join the chat at https://gitter.im/deviantony/docker-elk](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/deviantony/docker-elk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Elastic Stack version](https://img.shields.io/badge/ELK-6.2.2-blue.svg?style=flat)](https://github.com/deviantony/docker-elk/issues/248)

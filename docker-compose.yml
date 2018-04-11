@@ -40,6 +40,30 @@ services:
       - "15672:15672"
       - "5672:5672"
   
+  mssql:
+    image: microsoft/mssql-server-linux:2017-latest
+    ports:
+      - "1433:1433"
+
+  # cayley:
+  #   image: alectolytic/cayley
+
+  hashiVault:
+    image: vault
+    ports:
+      - "8200:8200"
+  
+  hashisConsul:
+    image: consul
+    ports:
+      - "8301:8301"
+
+  dnsmasq:
+    image: andyshinn/dnsmasq
+    ports:
+      - "53:53/udp"
+      - "53:53"
+
   # ejabberd:
   #   image: ejabberd
   #   ports: 
