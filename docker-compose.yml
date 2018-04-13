@@ -21,56 +21,12 @@ services:
     image: percona 
     ports:
       - "3306:3306"
-  couchdb:
-    image: couchdb
-    ports: 
-      - "5984:5984"
-
-  cassandra:
-    image: cassandra
-    ports: 
-      - "7000:7000"
-      - "9042:9042"
-      - "9160:9160"
 
   rabbitmq:
     image: rabbitmq
     ports:
       - "15672:15672"
       - "5672:5672"
-  
-  mssql:
-    image: microsoft/mssql-server-linux:2017-latest
-    ports:
-      - "1433:1433"
-
-  # cayley:
-  #   image: alectolytic/cayley
-
-  hashiVault:
-    image: vault
-    ports:
-      - "8200:8200"
-  
-  hashisConsul:
-    image: consul
-    ports:
-      - "8301:8301"
-
-  dnsmasq:
-    image: andyshinn/dnsmasq
-    ports:
-      - "53:53/udp"
-      - "53:53"
-
-  # ejabberd:
-  #   image: ejabberd
-  #   ports: 
-  #     - "5222:5222"
-  #     - "5269:5269"
-  #     - "5280:5280"
-  #   build:
-  #     args:
 
   elasticsearch:
     build:
@@ -111,6 +67,51 @@ services:
       - elk
     depends_on:
       - elasticsearch
+
+# couchdb:
+  #   image: couchdb
+  #   ports: 
+  #     - "5984:5984"
+
+  # cassandra:
+  #   image: cassandra
+  #   ports: 
+  #     - "7000:7000"
+  #     - "9042:9042"
+  #     - "9160:9160"
+  
+  # mssql:
+  #   image: microsoft/mssql-server-linux:2017-latest
+  #   ports:
+  #     - "1433:1433"
+
+  # cayley:
+  #   image: alectolytic/cayley
+
+  # hashiVault:
+  #   image: vault
+  #   ports:
+  #     - "8200:8200"
+  
+  # hashisConsul:
+  #   image: consul
+  #   ports:
+  #     - "8301:8301"
+
+  # dnsmasq:
+  #   image: andyshinn/dnsmasq
+  #   ports:
+  #     - "53:53/udp"
+  #     - "53:53"
+
+  # ejabberd:
+  #   image: ejabberd
+  #   ports: 
+  #     - "5222:5222"
+  #     - "5269:5269"
+  #     - "5280:5280"
+  #   build:
+  #     args:
 
 networks:
 
