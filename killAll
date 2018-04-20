@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+echo '=== Kill them all === \n'
+echo 'All container get killed: \n'
+docker ps -aq
+echo 'Stop All Container \n'
+docker stop $(docker ps -aq)
+echo 'Remove All Container \n'
+docker rm $(docker ps -aq)

@@ -6,8 +6,7 @@ services:
     ports:
       - "6379:6379"
     volumes: 
-      - ./mnt/redis:/data
-
+      - ./mnt/redis/db_data:/data
   memcached:
     image: memcached
     ports:
@@ -18,27 +17,27 @@ services:
     ports: 
       - "27017:27017"
     volumes:
-     - ./mnt/mongodb:/data/db
+     - ./mnt/mongodb/db_data:/data/db
 
   percona:
     image: percona 
     ports:
       - "3306:3306"
     volumes:
-     - './mnt/percona:/var/lib/mysql'
-
+      - './mnt/percona/db_data:/var/lib/mysql'
+    environment: 
+      - MYSQL_ROOT_PASSWORD=root
   rabbitmq:
     image: rabbitmq
     ports:
       - "15672:15672"
       - "5672:5672"
-
   elasticsearch:
     build:
       context: elasticsearch/
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
-      - ./mnt/elastic/:/usr/share/elasticsearch/data
+      - ./mnt/elastic/db_data:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -61,7 +60,6 @@ services:
       - elk
     depends_on:
       - elasticsearch
-
   kibana:
     build:
       context: kibana/
@@ -78,19 +76,31 @@ services:
     ports: 
       - "5984:5984"
     volumes: 
-      - ./mnt/couchdb:/opt/couchdb/data
+      - ./mnt/couchdb/db_data:/opt/couchdb/data
   
-  nginx:
-    image: nginx:latest
+  riak:
+    image: basho/riak-kv
     ports:
-      - "18080:80"
-    volumes: 
-      - ./mng/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./mnt/nginx/logs:/var/log/nginx/
-    links: 
-      - php
-  php:
-    image: php:7-fpm
+      - "8087:8087"
+      - "8098:8098"
+    environment:
+      - CLUSTER_NAME=riakkv
+    labels:
+      - "com.basho.riak.cluster.name=riakkv"
+    volumes:
+      - ./mnt/riak/db_data:/etc/riak/schemas
+  
+  # nginx:
+  #   image: nginx:latest
+  #   ports:
+  #     - "18080:80"
+  #   volumes: 
+  #     - ./mng/nginx/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./mnt/nginx/logs:/var/log/nginx/
+  #   links: 
+  #     - php
+  # php:
+  #   image: php:7-fpm
 
   # cassandra:
   #   image: cassandra
@@ -98,6 +108,8 @@ services:
   #     - "7000:7000"
   #     - "9042:9042"
   #     - "9160:9160"
+  #   volumes: 
+  #     - ./mnt/cassandra:/var/lib/cassandra
   
   # mssql:
   #   image: microsoft/mssql-server-linux:2017-latest

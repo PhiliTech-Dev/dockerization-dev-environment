@@ -1,5 +1,1 @@
-mnt/couchdb
-mnt/elastic
-mnt/mongodb
-mnt/percona
-mnt/redis
+.DS_Store
