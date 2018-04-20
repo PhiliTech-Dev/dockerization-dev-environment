@@ -6,7 +6,7 @@ services:
     ports:
       - "6379:6379"
     volumes: 
-      - ./mnt/redis/db_data:/data
+      - ./redis/db_data:/data
   memcached:
     image: memcached
     ports:
@@ -17,16 +17,17 @@ services:
     ports: 
       - "27017:27017"
     volumes:
-      - ./mnt/mongodb/db_data:/data/db
+      - ./mongodb/db_data:/data/db
 
   percona:
     image: percona 
     ports:
       - "3306:3306"
     volumes:
-      - './mnt/percona/db_data/mysql_data:/var/lib/mysql'
-      - './mnt/percona/db_data/mysql_log:/var/log/mysql'
-      - './mnt/percona/my.cnf:/etc/mysql/my.cnf'
+      - './percona/db_data/mysql_data:/var/lib/mysql'
+      - './percona/db_data/mysql_log:/var/log/mysql'
+      - './percona/conf.d:/etc/mysql/conf.d'
+      # - './mnt/percona/my.cnf:/etc/mysql/my.cnf'
     environment: 
       - MYSQL_ROOT_PASSWORD=root
   rabbitmq:
@@ -39,7 +40,7 @@ services:
       context: elasticsearch/
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
-      - ./mnt/elastic/db_data:/usr/share/elasticsearch/data
+      - ./elastic/db_data:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -78,31 +79,33 @@ services:
     ports: 
       - "5984:5984"
     volumes: 
-      - ./mnt/couchdb/db_data:/opt/couchdb/data
+      - ./couchdb/db_data:/opt/couchdb/data
   
-  riak:
-    image: basho/riak-kv
-    ports:
-      - "8087:8087"
-      - "8098:8098"
-    environment:
-      - CLUSTER_NAME=riakkv
-    labels:
-      - "com.basho.riak.cluster.name=riakkv"
-    volumes:
-      - ./mnt/riak/db_data:/etc/riak/schemas
-  
-  # nginx:
-  #   image: nginx:latest
+  # riak:
+  #   image: basho/riak-kv
   #   ports:
-  #     - "18080:80"
-  #   volumes: 
-  #     - ./mng/nginx/nginx.conf:/etc/nginx/nginx.conf
-  #     - ./mnt/nginx/logs:/var/log/nginx/
-  #   links: 
-  #     - php
-  # php:
-  #   image: php:7-fpm
+  #     - "8087:8087"
+  #     - "8098:8098"
+  #   environment:
+  #     - CLUSTER_NAME=riakkv
+  #   labels:
+  #     - "com.basho.riak.cluster.name=riakkv"
+  #   volumes:
+  #     - ./mnt/riak/db_data:/etc/riak/schemas
+  
+  nginx:
+    build:
+      context: nginx/
+    ports:
+      - "18080:80"
+    volumes: 
+      - ./mnt/nginx/data/logs:/var/log/nginx
+      - ./mnt/nginx/html:/nginx/data
+      - ./mng/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    links: 
+      - php
+  php:
+    image: php:7-fpm
 
   # cassandra:
   #   image: cassandra

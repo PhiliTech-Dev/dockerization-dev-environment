@@ -1,5 +1,21 @@
 # Dockerized Dev Environment
 
+# Quick Start
+
+Install Docker:
+**MacOs**:
+```brew cask install docker```
+
+After installation just run: 
+```docker-compose build```
+to build the docker containers 
+
+Then:
+```docker-compose up```
+Or:
+```docker-compose up -d```
+
+## Structure
 
 
 [![Join the chat at https://gitter.im/deviantony/docker-elk](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/deviantony/docker-elk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)

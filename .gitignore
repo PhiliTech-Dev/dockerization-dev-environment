@@ -6,3 +6,10 @@ mnt/percona/db_data
 mnt/redis/db_data
 mnt/riak/db_data
 *.DS_Store
+cassandra/db_data
+couchdb/db_data
+elastic/db_data
+mongodb/db_data
+percona/db_data
+redis/db_data
+riak/db_data
