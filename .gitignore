@@ -1,1 +1,8 @@
-.DS_Store
+.DS_Storemnt/cassandra/db_data
+mnt/couchdb/db_data
+mnt/elastic/db_data
+mnt/mongodb/db_data
+mnt/percona/db_data
+mnt/redis/db_data
+mnt/riak/db_data
+*.DS_Store
