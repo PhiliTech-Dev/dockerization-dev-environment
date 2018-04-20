@@ -1,19 +1,13 @@
 # Dockerized Dev Environment
 
-# Quick Start
+# Quick Start  
 
-Install Docker:
-**MacOs**:
-```brew cask install docker```
+Install Docker:  
+**MacOs**:  
+```brew cask install docker```  
 
-After installation just run: 
-```docker-compose build```
-to build the docker containers 
-
-Then:
-```docker-compose up```
-Or:
-```docker-compose up -d```
+After installation just run:   
+```docker-compose up -d --build```  
 
 ## Structure
 
