@@ -13,3 +13,4 @@ mongodb/db_data
 percona/db_data
 redis/db_data
 riak/db_data
+nginx/logs/error.log

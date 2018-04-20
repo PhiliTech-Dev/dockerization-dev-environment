@@ -1,40 +1,40 @@
 version: '2'
 
 services:
-  redis:
-    image: redis
-    ports:
-      - "6379:6379"
-    volumes: 
-      - ./redis/db_data:/data
-  memcached:
-    image: memcached
-    ports:
-      - "11211:11211"
+  # redis:
+  #   image: redis
+  #   ports:
+  #     - "6379:6379"
+  #   volumes: 
+  #     - ./redis/db_data:/data
+  # memcached:
+  #   image: memcached
+  #   ports:
+  #     - "11211:11211"
 
-  mongodb:
-    image: mongo
-    ports: 
-      - "27017:27017"
-    volumes:
-      - ./mongodb/db_data:/data/db
+  # mongodb:
+  #   image: mongo
+  #   ports: 
+  #     - "27017:27017"
+  #   volumes:
+  #     - ./mongodb/db_data:/data/db
 
-  percona:
-    image: percona 
-    ports:
-      - "3306:3306"
-    volumes:
-      - './percona/db_data/mysql_data:/var/lib/mysql'
-      - './percona/db_data/mysql_log:/var/log/mysql'
-      - './percona/conf.d:/etc/mysql/conf.d'
-      # - './mnt/percona/my.cnf:/etc/mysql/my.cnf'
-    environment: 
-      - MYSQL_ROOT_PASSWORD=root
-  rabbitmq:
-    image: rabbitmq
-    ports:
-      - "15672:15672"
-      - "5672:5672"
+  # percona:
+  #   image: percona 
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - './percona/db_data/mysql_data:/var/lib/mysql'
+  #     - './percona/db_data/mysql_log:/var/log/mysql'
+  #     - './percona/conf.d:/etc/mysql/conf.d'
+  #     # - './mnt/percona/my.cnf:/etc/mysql/my.cnf'
+  #   environment: 
+  #     - MYSQL_ROOT_PASSWORD=root
+  # rabbitmq:
+  #   image: rabbitmq
+  #   ports:
+  #     - "15672:15672"
+  #     - "5672:5672"
   elasticsearch:
     build:
       context: elasticsearch/
@@ -52,13 +52,10 @@ services:
   logstash:
     build:
       context: logstash/
-    volumes:
-      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
-      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
     ports:
       - "5000:5000"
     environment:
-      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+      LS_JAVA_OPTS: "-Xmx512m -Xms512m"
     networks:
       - elk
     depends_on:
@@ -74,13 +71,32 @@ services:
       - elk
     depends_on:
       - elasticsearch
+  nginx:
+    build:
+      context: nginx/
+    ports:
+      - "9080:8080"
+    volumes: 
+      - ./nginx/logs:/var/log/nginx
+      - ./nginx/data:/nginx/data
+      - ./nginx/sites:/etc/nginx/sites-enabled
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks: 
+      - elk
+    links: 
+      - php
+  php:
+    image: php:7-fpm
+    ports: 
+      - 9000:9000
+
   couchdb:
     image: couchdb
     ports: 
       - "5984:5984"
     volumes: 
       - ./couchdb/db_data:/opt/couchdb/data
-  
+
   # riak:
   #   image: basho/riak-kv
   #   ports:
@@ -91,21 +107,7 @@ services:
   #   labels:
   #     - "com.basho.riak.cluster.name=riakkv"
   #   volumes:
-  #     - ./mnt/riak/db_data:/etc/riak/schemas
-  
-  nginx:
-    build:
-      context: nginx/
-    ports:
-      - "18080:80"
-    volumes: 
-      - ./mnt/nginx/data/logs:/var/log/nginx
-      - ./mnt/nginx/html:/nginx/data
-      - ./mng/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    links: 
-      - php
-  php:
-    image: php:7-fpm
+  #     - ./riak/db_data:/etc/riak/schemas
 
   # cassandra:
   #   image: cassandra
@@ -114,7 +116,7 @@ services:
   #     - "9042:9042"
   #     - "9160:9160"
   #   volumes: 
-  #     - ./mnt/cassandra:/var/lib/cassandra
+  #     - ./cassandra:/var/lib/cassandra
   
   # mssql:
   #   image: microsoft/mssql-server-linux:2017-latest
