@@ -17,14 +17,16 @@ services:
     ports: 
       - "27017:27017"
     volumes:
-     - ./mnt/mongodb/db_data:/data/db
+      - ./mnt/mongodb/db_data:/data/db
 
   percona:
     image: percona 
     ports:
       - "3306:3306"
     volumes:
-      - './mnt/percona/db_data:/var/lib/mysql'
+      - './mnt/percona/db_data/mysql_data:/var/lib/mysql'
+      - './mnt/percona/db_data/mysql_log:/var/log/mysql'
+      - './mnt/percona/my.cnf:/etc/mysql/my.cnf'
     environment: 
       - MYSQL_ROOT_PASSWORD=root
   rabbitmq:
