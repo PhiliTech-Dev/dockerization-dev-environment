@@ -14,3 +14,7 @@ percona/db_data
 redis/db_data
 riak/db_data
 nginx/logs/error.log
+elasticsearch/db_data/nodes
+elasticsearch/db_data/nodes/0/_state/node-0.st
+elasticsearch/db_data/nodes/0/node.lock
+elasticsearch/db_data/nodes/0/_state/global-0.st

@@ -24,9 +24,9 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - './percona/db_data/mysql_data:/var/lib/mysql'
-      - './percona/db_data/mysql_log:/var/log/mysql'
-      - './percona/conf.d:/etc/mysql/conf.d'
+      - './percona/db_data/mysql_data:/var/lib/mysql:rw'
+      - './percona/db_data/mysql_log:/var/log/mysql:rw'
+      - './percona/conf.d:/etc/mysql/conf.d:rw'
       # - './mnt/percona/my.cnf:/etc/mysql/my.cnf'
     environment: 
       - MYSQL_ROOT_PASSWORD=root
@@ -41,27 +41,16 @@ services:
     build:
       context: elasticsearch/
     volumes:
-      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
-      - ./elastic/db_data:/usr/share/elasticsearch/data
+      - './elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml'
+      - './elasticsearch/db_data:/usr/share/elasticsearch/data'
     ports:
       - "9200:9200"
       - "9300:9300"
     environment:
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ES_JAVA_OPTS: "-Xmx768m -Xms768m"
+    mem_limit: 1024M
     networks:
       - elk
-
-  logstash:
-    build:
-      context: logstash/
-    ports:
-      - "5000:5000"
-    environment:
-      LS_JAVA_OPTS: "-Xmx512m -Xms512m"
-    networks:
-      - elk
-    depends_on:
-      - elasticsearch
       
   kibana:
     build:
@@ -80,7 +69,19 @@ services:
     ports: 
       - "5984:5984"
     volumes: 
-      - ./couchdb/db_data:/opt/couchdb/data
+      - ./couchdb/db_data:/opt/couchdb/data:rw
+
+  # logstash:
+  #   build:
+  #     context: logstash/
+  #   ports:
+  #     - "5000:5000"
+  #   environment:
+  #     LS_JAVA_OPTS: "-Xmx512m -Xms512m"
+  #   networks:
+  #     - elk
+  #   depends_on:
+  #     - elasticsearch
 
   # nginx:
   #   build:
