@@ -1,40 +1,42 @@
 version: '2'
 
 services:
-  # redis:
-  #   image: redis
-  #   ports:
-  #     - "6379:6379"
-  #   volumes: 
-  #     - ./redis/db_data:/data
-  # memcached:
-  #   image: memcached
-  #   ports:
-  #     - "11211:11211"
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes: 
+      - ./redis/db_data:/data
+  memcached:
+    image: memcached
+    ports:
+      - "11211:11211"
 
-  # mongodb:
-  #   image: mongo
-  #   ports: 
-  #     - "27017:27017"
-  #   volumes:
-  #     - ./mongodb/db_data:/data/db
+  mongodb:
+    image: mongo
+    ports: 
+      - "27017:27017"
+    volumes:
+      - ./mongodb/db_data:/data/db
 
-  # percona:
-  #   image: percona 
-  #   ports:
-  #     - "3306:3306"
-  #   volumes:
-  #     - './percona/db_data/mysql_data:/var/lib/mysql'
-  #     - './percona/db_data/mysql_log:/var/log/mysql'
-  #     - './percona/conf.d:/etc/mysql/conf.d'
-  #     # - './mnt/percona/my.cnf:/etc/mysql/my.cnf'
-  #   environment: 
-  #     - MYSQL_ROOT_PASSWORD=root
-  # rabbitmq:
-  #   image: rabbitmq
-  #   ports:
-  #     - "15672:15672"
-  #     - "5672:5672"
+  percona:
+    image: percona 
+    ports:
+      - "3306:3306"
+    volumes:
+      - './percona/db_data/mysql_data:/var/lib/mysql'
+      - './percona/db_data/mysql_log:/var/log/mysql'
+      - './percona/conf.d:/etc/mysql/conf.d'
+      # - './mnt/percona/my.cnf:/etc/mysql/my.cnf'
+    environment: 
+      - MYSQL_ROOT_PASSWORD=root
+
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+  
   elasticsearch:
     build:
       context: elasticsearch/
@@ -60,6 +62,7 @@ services:
       - elk
     depends_on:
       - elasticsearch
+      
   kibana:
     build:
       context: kibana/
@@ -71,24 +74,6 @@ services:
       - elk
     depends_on:
       - elasticsearch
-  nginx:
-    build:
-      context: nginx/
-    ports:
-      - "9080:8080"
-    volumes: 
-      - ./nginx/logs:/var/log/nginx
-      - ./nginx/data:/nginx/data
-      - ./nginx/sites:/etc/nginx/sites-enabled
-      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
-    networks: 
-      - elk
-    links: 
-      - php
-  php:
-    image: php:7-fpm
-    ports: 
-      - 9000:9000
 
   couchdb:
     image: couchdb
@@ -96,6 +81,25 @@ services:
       - "5984:5984"
     volumes: 
       - ./couchdb/db_data:/opt/couchdb/data
+
+  # nginx:
+  #   build:
+  #     context: nginx/
+  #   ports:
+  #     - "9080:8080"
+  #   volumes: 
+  #     - ./nginx/logs:/var/log/nginx
+  #     - ./nginx/data:/nginx/data
+  #     - ./nginx/sites:/etc/nginx/sites-enabled
+  #     - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+  #   networks: 
+  #     - elk
+  #   links: 
+  #     - php
+  # php:
+  #   image: php:7-fpm
+  #   ports: 
+  #     - 9000:9000
 
   # riak:
   #   image: basho/riak-kv
