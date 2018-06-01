@@ -11,14 +11,12 @@ services:
     image: memcached
     ports:
       - "11211:11211"
-
   mongodb:
     image: mongo
     ports: 
       - "27017:27017"
     volumes:
       - ./mongodb/db_data:/data/db
-
   percona:
     image: percona 
     ports:
@@ -30,13 +28,11 @@ services:
       # - './mnt/percona/my.cnf:/etc/mysql/my.cnf'
     environment: 
       - MYSQL_ROOT_PASSWORD=root
-
   rabbitmq:
     image: rabbitmq
     ports:
       - "15672:15672"
       - "5672:5672"
-  
   elasticsearch:
     build:
       context: elasticsearch/
@@ -63,7 +59,6 @@ services:
       - elk
     depends_on:
       - elasticsearch
-
   couchdb:
     image: couchdb
     ports: 
