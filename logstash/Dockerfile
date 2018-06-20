@@ -1,4 +1,4 @@
-FROM logstash:5.5-alpine
+FROM docker.elastic.co/logstash/logstash:6.3.0
 
 ENV PLUGIN_BIN "/usr/share/logstash/bin/logstash-plugin"
 
