@@ -15,12 +15,6 @@ services:
 
   mongodb:
     image: mongo
-    deploy:
-      restart_policy:
-        condition: any
-        delay: 5s
-        max_attempts: 3
-        window: 120s
     ports: 
       - "27017:27017"
     volumes:
@@ -28,12 +22,6 @@ services:
 
   percona:
     image: percona
-    deploy:
-      restart_policy:
-        condition: any
-        delay: 5s
-        max_attempts: 3
-        window: 120s
     ports:
       - "3306:3306"
     volumes:
@@ -61,7 +49,6 @@ services:
       - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xmx768m -Xms768m"
-    mem_limit: 1024M
     networks:
       - elk
       
