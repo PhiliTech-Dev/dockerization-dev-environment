@@ -1,14 +1,8 @@
-version: '2'
+version: '3'
 
 services:
   redis:
     image: redis
-    deploy:
-      restart_policy:
-        condition: any
-        delay: 5s
-        max_attempts: 3
-        window: 120s
     ports:
       - "6379:6379"
     volumes: 
@@ -155,16 +149,16 @@ services:
   # cayley:
   #   image: alectolytic/cayley
 
-  hashiVault:
-    image: vault
-    deploy:
-      restart_policy:
-        condition: any
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-    ports:
-      - "18200:8200"
+  # hashiVault:
+  #   image: vault
+  #   deploy:
+  #     restart_policy:
+  #       condition: any
+  #       delay: 5s
+  #       max_attempts: 3
+  #       window: 120s
+  #   ports:
+  #     - "18200:8200"
   
   # hashisConsul:
   #   image: consul
