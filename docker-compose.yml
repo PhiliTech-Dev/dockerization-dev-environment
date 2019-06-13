@@ -59,6 +59,12 @@ services:
       - elk
     depends_on:
       - elasticsearch
+  
+  # apm:
+  #   build: 
+  #     context: elastic-apm-server/
+  #   ports:
+  #     - 8200:8200
   couchdb:
     image: couchdb
     ports: 
